@@ -35,7 +35,7 @@ agriculture.
 
 library(pacman)
 p_load(litsearchr, rcrossref, purrr)
-## p_load(litsearchr, rcrossref, bibliometrix)
+## p_load(litsearchr, rcrossref, purrr, bibliometrix)
 
 ```
 ## *litsearchr* workflow
