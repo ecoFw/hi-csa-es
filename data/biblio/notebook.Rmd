@@ -1,0 +1,84 @@
+---
+title: Literature Review: Climate Smart Ag Links to Ecosystem Services
+author: MK Lau
+---
+
+# Data Pipeline Design
+
+- Compile search terms 
+- Assess search term relevance [litsearchr]
+  - Access literature [rcrossref]
+- Search literature [EBSCO Search Premier]
+- Analyze literature results [bibliometrix]
+  - Analyze content for intersection with Hawai‘i agriculture
+  - Key cross-terms: tropic, hawaii, pacific, island, ... 
+- Create a dashboard [Shiny]
+- Host dashboard [RShiny]
+
+# Search Terms
+
+Develop a list from the most recent reviews of climate smart
+agriculture. 
+
+- climate smart agriculture
+- csa
+- climate smart commodity
+- csc
+- climate change
+- agroecology
+- sustainable agriculture
+- nrcs
+- conservation
+- soil health
+
+```{r setup, echo = FALSE}
+
+library(pacman)
+p_load(litsearchr, rcrossref, purrr)
+## p_load(litsearchr, rcrossref, bibliometrix)
+
+```
+## *litsearchr* workflow
+
+1. Identifies potential keywords through the naive search input
+2. Builds a keyword co-occurrence network to increase search precision
+3. Uses a cutoff function to identify keyword importance
+4. Assists with grouping terms into concepts
+5. Writes a Boolean search 
+
+
+## rcrossref
+
+https://www.pauloldham.net/api-resources-for-scientific-literature/
+https://ciakovx.github.io/rcrossref.html
+
+```{r cr-example, eval = FALSE}
+
+qs <- c("climate smart agriculture")
+res <- cr_works(query = qs, limit = 100) %>% pluck("data")
+names(res)
+res.csa <- res %>% dplyr::select(title, doi, volume, 
+                                 issue, page, issued, 
+                                 url, publisher, reference.count,
+                                 type, abstract, issn)
+test <- cr_cn(pluck(res[, "doi"], 1), format = "text", style = "chicago-note-bibliography")
+
+```
+
+
+
+
+# analysis
+
+bibliometrix
+
+
+## R Tools
+
+- https://elizagrames.github.io/litsearchr/#tutorials 
+- https://www.bibliometrix.org/home/index.php/layout/bibliometrix 
+- https://www.harc-hspa.com/climate-smart-agriculture.html 
+- https://github.com/elizagrames/topictagger 
+- https://github.com/cran/metagear 
+- https://cran.r-project.org/web/packages/scholar/index.html 
+
