@@ -37,7 +37,22 @@ library(pacman)
 p_load(litsearchr, rcrossref, purrr)
 ## p_load(litsearchr, rcrossref, purrr, bibliometrix)
 
+
 ```
+
+
+## rcrossref
+
+https://docs.ropensci.org/rcrossref/articles/rcrossref.html
+
+```{r cr-example, cache = TRUE}
+
+qs <- c("climate smart agriculture")
+res <- cr_works(query = qs, limit = 100) %>% pluck("data")
+names(res)
+
+```
+
 ## *litsearchr* workflow
 
 1. Identifies potential keywords through the naive search input
@@ -46,26 +61,18 @@ p_load(litsearchr, rcrossref, purrr)
 4. Assists with grouping terms into concepts
 5. Writes a Boolean search 
 
+https://luketudge.github.io/litsearchr-tutorial/litsearchr_tutorial.html
 
-## rcrossref
 
-https://www.pauloldham.net/api-resources-for-scientific-literature/
-https://ciakovx.github.io/rcrossref.html
+```{r litsearchr, cache = TRUE}
 
-```{r cr-example, eval = FALSE}
-
-qs <- c("climate smart agriculture")
-res <- cr_works(query = qs, limit = 100) %>% pluck("data")
-names(res)
-res.csa <- res %>% dplyr::select(title, doi, volume, 
-                                 issue, page, issued, 
-                                 url, publisher, reference.count,
-                                 type, abstract, issn)
-test <- cr_cn(pluck(res[, "doi"], 1), format = "text", style = "chicago-note-bibliography")
 
 ```
 
+## Webcrawling
 
+https://github.com/salimk/Rcrawler
+https://ladal.edu.au/webcrawling.html#Following_links
 
 
 # analysis
