@@ -1,7 +1,30 @@
 ---
-title: Literature Review: Climate Smart Ag Links to Ecosystem Services
+title: Literature Review - Climate Smart Ag Links to Ecosystem Services
 author: MK Lau
 ---
+
+
+# Context
+
+The City and County of Honolulu's Office of Climate Resilience has
+contracted OACA to produce a Climate Smart Agriculture database
+intended to inform food system professionals and policy makers on the
+potential ecosystem service impacts of CSA activities. The consultant
+(MK Lau) has been sub-contracted by OACA to complete the deliverables
+listed below in partial fulfillment of the larger contracted
+deliverable to HC&C.
+
+
+# Key Personnel
+
+*Dr. Matthew Kekoa Lau, PhD.* -- will combine his expertise in
+ecological systems theory and big data analysis with the practice of
+sustainable agriculture to produce the contracted deliverables.
+
+# Deliverables
+
+- CSA-ES literature synthesis
+- CSA-ES Resource Database
 
 # Data Pipeline Design
 
@@ -17,26 +40,34 @@ author: MK Lau
 
 # Search Terms
 
-Develop a list from the most recent reviews of climate smart
-agriculture. 
+Terms for practices to focus searches on was generated from the NRCS
+CSAF Mitigation Strategies 2024 list:
 
-- climate smart agriculture
-- csa
-- climate smart commodity
-- csc
-- climate change
-- agroecology
-- sustainable agriculture
-- nrcs
-- conservation
-- soil health
+- [NRCS](https://www.nrcs.usda.gov/sites/default/files/2023-10/NRCS-CSAF-Mitigation-Activities-List.pdf)
+
+Other potential sources of practices could be: 
+
+- [CSA](https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/climate/climate-smart-mitigation-activities)
+- [CSC](https://www.usda.gov/climate-solutions/climate-smart-commodities "CSC")
+
+Policy information can be obtained from the FAO databases: 
+
+- [FAO](https://fapda.apps.fao.org/fapda/#main.html "FAO Food and Agriculture")
+- [FAOForestry](https://www.fao.org/in-action/fapda/forestry-tool/policies/en/ "FAO Forestry Database")
+
+Urban Database for policy information: 
+
+[Urban](https://foodsystemsplanning.ap.buffalo.edu/resources/global-database-for-food-policies/adv-search-gfpd/ "University of Buffalo City and Regional Food Policy Database")
+
+Other government data:
+
+[GovData](https://www.fsa.usda.gov/online-services/fsa-online-data-resources/index "Other Government Data")
+
 
 ```{r setup, echo = FALSE}
 
 library(pacman)
-p_load(litsearchr, rcrossref, purrr)
-## p_load(litsearchr, rcrossref, purrr, bibliometrix)
-
+p_load(litsearchr, rcrossref, purrr, wordcloud, tm, RColorBrewer, ggplot2)
 
 ```
 
@@ -48,10 +79,61 @@ https://docs.ropensci.org/rcrossref/articles/rcrossref.html
 ```{r cr-example, cache = TRUE}
 
 qs <- c("climate smart agriculture")
-res <- cr_works(query = qs, limit = 100) %>% pluck("data")
-names(res)
+res <- cr_works(query = qs, limit = 1000) %>% pluck("data")
+head(res)
 
 ```
+
+```{r csa-wc, echo = FALSE}
+
+rmSW <- function(x, sw, replace = ""){
+    if (x %in% sw){
+        out <- replace
+    }else{
+        out <- x
+    }
+    return(out)
+}
+
+## csa.abs <- na.omit(res[["abstract"]]) %>% 
+##     paste(collapse = " ")
+
+##     gsub("<[^>]+>", "")
+
+csa.ti <- res[["title"]] %>% 
+    tolower %>% 
+    gsub(pattern = "[][!#$%()*,.:;<=>@^_|~.{}]", replacement = "")  %>% 
+    na.omit %>% 
+    strsplit(split = " ")  %>%
+    unlist  
+csa.ti <- sapply(csa.ti, rmSW, sw = stopwords("english")) 
+csa.ti <- csa.ti[csa.ti != ""]
+csa.tab <- table(csa.ti)
+
+
+```{r wc.plot, echo = FALSE}
+
+wordcloud(words = names(csa.tab), freq = csa.tab, min.freq = 10,
+          random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"))
+
+```
+
+```{r bar.plot, echo = FALSE}
+
+data <- data.frame(
+  category = c("Ecosystem", "Services"),
+  value = c(csa.tab["ecosystem"], csa.tab["services"])
+)
+
+ggplot(data, aes(x = category, y = value)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "",
+       x = "",
+       y = "Occurrences")
+
+```
+
 
 ## *litsearchr* workflow
 
@@ -74,25 +156,16 @@ https://luketudge.github.io/litsearchr-tutorial/litsearchr_tutorial.html
 https://github.com/salimk/Rcrawler
 https://ladal.edu.au/webcrawling.html#Following_links
 
-- [CSA](https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/climate/climate-smart-mitigation-activities)
-- [CSC](https://www.usda.gov/climate-solutions/climate-smart-commodities "CSC")
-- [NRCS](https://www.nrcs.usda.gov/sites/default/files/2023-10/NRCS-CSAF-Mitigation-Activities-List.pdf)
-
 
 # analysis
 
-
 - policy 
-- farming 
-- urban
-- database
-- rural
+- farming practices
+- databases
 - tropics
-- sub-tropics
-- colonial
+- ecosystem services
 
-
-## bibliometrix
+[Bibliometrix](https://www.bibliometrix.org/home/index.php/layout/bibliometrix  "Bibliometrix")
 
 
 ## R Tools
