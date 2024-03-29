@@ -35,24 +35,9 @@ agriculture.
 
 library(pacman)
 p_load(litsearchr, rcrossref, purrr)
-## p_load(litsearchr, rcrossref, purrr, bibliometrix)
-
-
-```
-
-
-## rcrossref
-
-https://docs.ropensci.org/rcrossref/articles/rcrossref.html
-
-```{r cr-example, cache = TRUE}
-
-qs <- c("climate smart agriculture")
-res <- cr_works(query = qs, limit = 100) %>% pluck("data")
-names(res)
+## p_load(litsearchr, rcrossref, bibliometrix)
 
 ```
-
 ## *litsearchr* workflow
 
 1. Identifies potential keywords through the naive search input
@@ -61,38 +46,31 @@ names(res)
 4. Assists with grouping terms into concepts
 5. Writes a Boolean search 
 
-https://luketudge.github.io/litsearchr-tutorial/litsearchr_tutorial.html
 
+## rcrossref
 
-```{r litsearchr, cache = TRUE}
+https://www.pauloldham.net/api-resources-for-scientific-literature/
+https://ciakovx.github.io/rcrossref.html
 
+```{r cr-example, eval = FALSE}
+
+qs <- c("climate smart agriculture")
+res <- cr_works(query = qs, limit = 100) %>% pluck("data")
+names(res)
+res.csa <- res %>% dplyr::select(title, doi, volume, 
+                                 issue, page, issued, 
+                                 url, publisher, reference.count,
+                                 type, abstract, issn)
+test <- cr_cn(pluck(res[, "doi"], 1), format = "text", style = "chicago-note-bibliography")
 
 ```
 
-## Webcrawling
 
-https://github.com/salimk/Rcrawler
-https://ladal.edu.au/webcrawling.html#Following_links
-
-- [CSA](https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/climate/climate-smart-mitigation-activities)
-- [CSC](https://www.usda.gov/climate-solutions/climate-smart-commodities "CSC")
-- [NRCS](https://www.nrcs.usda.gov/sites/default/files/2023-10/NRCS-CSAF-Mitigation-Activities-List.pdf)
 
 
 # analysis
 
-
-- policy 
-- farming 
-- urban
-- database
-- rural
-- tropics
-- sub-tropics
-- colonial
-
-
-## bibliometrix
+bibliometrix
 
 
 ## R Tools
