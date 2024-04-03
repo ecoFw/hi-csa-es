@@ -67,7 +67,9 @@ Other government data:
 ```{r setup, echo = FALSE}
 
 library(pacman)
-p_load(litsearchr, rcrossref, purrr, wordcloud, tm, RColorBrewer, ggplot2)
+p_load(litsearchr, rcrossref, purrr, wordcloud, 
+       tm, RColorBrewer, ggplot2, Rcrawler, rvest, 
+       knitr)
 
 ```
 
@@ -155,6 +157,49 @@ https://luketudge.github.io/litsearchr-tutorial/litsearchr_tutorial.html
 
 https://github.com/salimk/Rcrawler
 https://ladal.edu.au/webcrawling.html#Following_links
+
+
+```{r crawl-nrcs, cahce = TRUE, eval = TRUE}
+
+if ("nrcs-usda-gov-030004.Rdata" %in% dir("./data/")){
+    load("data/nrcs-usda-gov-030004.Rdata")
+}else{
+    Rcrawler(Website = "https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/climate/climate-smart-mitigation-activities",
+             no_cores = 4, no_conn = 4, 
+             NetworkData = TRUE,
+             ExtractXpathPat = "//*/a/@href",
+             ManyPerPattern = TRUE, MaxDepth = 2, 
+             )
+}
+
+nrc.url <- INDEX[INDEX[, "Level"] == 2, "Url"]
+nrc.url <- nrc.url[grepl("natural-resource-concerns/", nrc.url)]
+nrc.cat <- strsplit(nrc.url, "natural-resource-concerns/")
+nrc.url <- nrc.url[lapply(nrc.cat, length) == 2]
+nrc.cat <- nrc.cat[lapply(nrc.cat, length) == 2]
+nrc.cat <- lapply(nrc.cat, function(x) x[2])
+nrc.cat <- lapply(nrc.cat, strsplit, split = "\\/")
+nrc.cat <- lapply(nrc.cat, unlist)
+
+for (i in seq_len(length(nrc.cat))){
+    if (length(nrc.cat[[i]]) < max(unlist(lapply(nrc.cat, length)))){
+        nrc.cat[[i]] <- c(nrc.cat[[i]], rep("", times = max(unlist(lapply(nrc.cat, length))) - length(nrc.cat[[i]])))
+    }else{}
+}
+
+nrc.tab <- cbind(do.call(rbind, nrc.cat), nrc.url)
+colnames(nrc.tab) <- c("Category", 
+                       paste0(rep("Sub-Category"), (ncol(nrc.tab) - 2), 
+                       1:(ncol(nrc.tab) - 2)), 
+                       "Resource")
+
+```
+
+```{r csa-table, echo=FALSE, message=FALSE, warnings=FALSE, results='asis'}
+
+kable(nrc.tab)
+
+```
 
 
 # analysis

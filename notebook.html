@@ -464,6 +464,349 @@ precision</li>
 <div id="webcrawling" class="section level2">
 <h2>Webcrawling</h2>
 <p><a href="https://github.com/salimk/Rcrawler" class="uri">https://github.com/salimk/Rcrawler</a> <a href="https://ladal.edu.au/webcrawling.html#Following_links" class="uri">https://ladal.edu.au/webcrawling.html#Following_links</a></p>
+<pre class="r"><code>if (&quot;nrcs-usda-gov-030004.Rdata&quot; %in% dir(&quot;./data/&quot;)){
+    load(&quot;data/nrcs-usda-gov-030004.Rdata&quot;)
+}else{
+    Rcrawler(Website = &quot;https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/climate/climate-smart-mitigation-activities&quot;,
+             no_cores = 4, no_conn = 4, 
+             NetworkData = TRUE,
+             ExtractXpathPat = &quot;//*/a/@href&quot;,
+             ManyPerPattern = TRUE, MaxDepth = 2, 
+             )
+}
+
+nrc.url &lt;- INDEX[INDEX[, &quot;Level&quot;] == 2, &quot;Url&quot;]
+nrc.url &lt;- nrc.url[grepl(&quot;natural-resource-concerns/&quot;, nrc.url)]
+nrc.cat &lt;- strsplit(nrc.url, &quot;natural-resource-concerns/&quot;)
+nrc.url &lt;- nrc.url[lapply(nrc.cat, length) == 2]
+nrc.cat &lt;- nrc.cat[lapply(nrc.cat, length) == 2]
+nrc.cat &lt;- lapply(nrc.cat, function(x) x[2])
+nrc.cat &lt;- lapply(nrc.cat, strsplit, split = &quot;\\/&quot;)
+nrc.cat &lt;- lapply(nrc.cat, unlist)
+
+for (i in seq_len(length(nrc.cat))){
+    if (length(nrc.cat[[i]]) &lt; max(unlist(lapply(nrc.cat, length)))){
+        nrc.cat[[i]] &lt;- c(nrc.cat[[i]], rep(&quot;&quot;, times = max(unlist(lapply(nrc.cat, length))) - length(nrc.cat[[i]])))
+    }else{}
+}
+
+nrc.tab &lt;- cbind(do.call(rbind, nrc.cat), nrc.url)
+colnames(nrc.tab) &lt;- c(&quot;Category&quot;, 
+                       paste0(rep(&quot;Sub-Category&quot;), (ncol(nrc.tab) - 2), 
+                       1:(ncol(nrc.tab) - 2)), 
+                       &quot;Resource&quot;)</code></pre>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="17%" />
+<col width="17%" />
+<col width="53%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Category</th>
+<th align="left">Sub-Category21</th>
+<th align="left">Sub-Category22</th>
+<th align="left">Resource</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">soils</td>
+<td align="left">soil-health</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soils/soil-health" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soils/soil-health</a></td>
+</tr>
+<tr class="even">
+<td align="left">climate</td>
+<td align="left">news</td>
+<td align="left">usda-celebrates-10-years-of-climate-hubs</td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/climate/news/usda-celebrates-10-years-of-climate-hubs" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/climate/news/usda-celebrates-10-years-of-climate-hubs</a></td>
+</tr>
+<tr class="odd">
+<td align="left">soil</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/</a></td>
+</tr>
+<tr class="even">
+<td align="left">water</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/water/" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/water/</a></td>
+</tr>
+<tr class="odd">
+<td align="left">plants</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/plants/" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/plants/</a></td>
+</tr>
+<tr class="even">
+<td align="left">animals</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/animals/" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/animals/</a></td>
+</tr>
+<tr class="odd">
+<td align="left">animals</td>
+<td align="left">wildlife</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/animals/wildlife" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/animals/wildlife</a></td>
+</tr>
+<tr class="even">
+<td align="left">animals</td>
+<td align="left">insects-pollinators</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/animals/insects-pollinators" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/animals/insects-pollinators</a></td>
+</tr>
+<tr class="odd">
+<td align="left">land</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/land/" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/land/</a></td>
+</tr>
+<tr class="even">
+<td align="left">air</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/air/" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/air/</a></td>
+</tr>
+<tr class="odd">
+<td align="left">air</td>
+<td align="left">air-quality</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/air/air-quality" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/air/air-quality</a></td>
+</tr>
+<tr class="even">
+<td align="left">air</td>
+<td align="left">usda-agricultural-air-quality-task-force</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/air/usda-agricultural-air-quality-task-force" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/air/usda-agricultural-air-quality-task-force</a></td>
+</tr>
+<tr class="odd">
+<td align="left">energy</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/energy/" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/energy/</a></td>
+</tr>
+<tr class="even">
+<td align="left">climate</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/climate/" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/climate/</a></td>
+</tr>
+<tr class="odd">
+<td align="left">climate</td>
+<td align="left">adaptation</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/climate/adaptation" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/climate/adaptation</a></td>
+</tr>
+<tr class="even">
+<td align="left">climate</td>
+<td align="left">mitigation</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/climate/mitigation" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/climate/mitigation</a></td>
+</tr>
+<tr class="odd">
+<td align="left">climate</td>
+<td align="left">nutrient-management</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/climate/nutrient-management" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/climate/nutrient-management</a></td>
+</tr>
+<tr class="even">
+<td align="left">wildlife-habitat</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/wildlife-habitat/" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/wildlife-habitat/</a></td>
+</tr>
+<tr class="odd">
+<td align="left">invasive-species-and-pests</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/invasive-species-and-pests/" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/invasive-species-and-pests/</a></td>
+</tr>
+<tr class="even">
+<td align="left">watersheds</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/watersheds" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/watersheds</a></td>
+</tr>
+<tr class="odd">
+<td align="left">soil</td>
+<td align="left">soil-science</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/soil-science/" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/soil-science/</a></td>
+</tr>
+<tr class="even">
+<td align="left">soil</td>
+<td align="left">soil-and-plant-science-news</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/soil-and-plant-science-news" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/soil-and-plant-science-news</a></td>
+</tr>
+<tr class="odd">
+<td align="left">soil</td>
+<td align="left">activities</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/activities" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/activities</a></td>
+</tr>
+<tr class="even">
+<td align="left">soil</td>
+<td align="left">soil-and-plant-showcase</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/soil-and-plant-showcase" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/soil-and-plant-showcase</a></td>
+</tr>
+<tr class="odd">
+<td align="left">soil</td>
+<td align="left">accolades-in-spades</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/accolades-in-spades" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/accolades-in-spades</a></td>
+</tr>
+<tr class="even">
+<td align="left">soil</td>
+<td align="left">soil-survey</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/soil-survey" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/soil-survey</a></td>
+</tr>
+<tr class="odd">
+<td align="left">soils</td>
+<td align="left">soil-geography</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soils/soil-geography" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soils/soil-geography</a></td>
+</tr>
+<tr class="even">
+<td align="left">soil</td>
+<td align="left">soil-use</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/soil-use" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/soil-use</a></td>
+</tr>
+<tr class="odd">
+<td align="left">soil</td>
+<td align="left">kellogg-soil-survey-laboratory-kssl</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/kellogg-soil-survey-laboratory-kssl" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/kellogg-soil-survey-laboratory-kssl</a></td>
+</tr>
+<tr class="even">
+<td align="left">soil</td>
+<td align="left">soil-science-research</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/soil-science-research" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/soil-science-research</a></td>
+</tr>
+<tr class="odd">
+<td align="left">soil</td>
+<td align="left">soil-science-contacts</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/soil-science-contacts" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/soil-science-contacts</a></td>
+</tr>
+<tr class="even">
+<td align="left">plants</td>
+<td align="left">organic</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/plants/organic/" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/plants/organic/</a></td>
+</tr>
+<tr class="odd">
+<td align="left">land</td>
+<td align="left">forests</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/land/forests" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/land/forests</a></td>
+</tr>
+<tr class="even">
+<td align="left">plants</td>
+<td align="left">trees</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/plants/trees" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/plants/trees</a></td>
+</tr>
+<tr class="odd">
+<td align="left">land</td>
+<td align="left">cropland</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/land/cropland" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/land/cropland</a></td>
+</tr>
+<tr class="even">
+<td align="left">land</td>
+<td align="left">range-pasture</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/land/range-pasture" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/land/range-pasture</a></td>
+</tr>
+<tr class="odd">
+<td align="left">soils</td>
+<td align="left">state-soil-scientists</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soils/state-soil-scientists" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soils/state-soil-scientists</a></td>
+</tr>
+<tr class="even">
+<td align="left">soils</td>
+<td align="left">getting-started-with-web-soil-survey</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soils/getting-started-with-web-soil-survey" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soils/getting-started-with-web-soil-survey</a></td>
+</tr>
+<tr class="odd">
+<td align="left">soil</td>
+<td align="left">wss-tips-and-shortcuts</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/wss-tips-and-shortcuts" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/wss-tips-and-shortcuts</a></td>
+</tr>
+<tr class="even">
+<td align="left">soil</td>
+<td align="left">annual-refresh-of-soil-survey-data</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/annual-refresh-of-soil-survey-data" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/annual-refresh-of-soil-survey-data</a></td>
+</tr>
+<tr class="odd">
+<td align="left">soil</td>
+<td align="left">news</td>
+<td align="left">usda-website-puts-soils-information-tools</td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/news/usda-website-puts-soils-information-tools" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/news/usda-website-puts-soils-information-tools</a></td>
+</tr>
+<tr class="even">
+<td align="left">land</td>
+<td align="left">cropland</td>
+<td align="left">publications</td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/land/cropland/publications" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/land/cropland/publications</a></td>
+</tr>
+<tr class="odd">
+<td align="left">plants</td>
+<td align="left">grasses</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/plants/grasses" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/plants/grasses</a></td>
+</tr>
+<tr class="even">
+<td align="left">plants</td>
+<td align="left">shrubs</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/plants/shrubs" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/plants/shrubs</a></td>
+</tr>
+<tr class="odd">
+<td align="left">land</td>
+<td align="left">wetlands</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/land/wetlands" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/land/wetlands</a></td>
+</tr>
+<tr class="even">
+<td align="left">plants</td>
+<td align="left">forbs</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/plants/forbs" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/plants/forbs</a></td>
+</tr>
+<tr class="odd">
+<td align="left">plants</td>
+<td align="left">legumes</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/plants/legumes" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/plants/legumes</a></td>
+</tr>
+<tr class="even">
+<td align="left">soil</td>
+<td align="left">national-soil-survey-center</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/national-soil-survey-center" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/national-soil-survey-center</a></td>
+</tr>
+<tr class="odd">
+<td align="left">land</td>
+<td align="left">forests</td>
+<td align="left">national-agroforestry-center</td>
+<td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/land/forests/national-agroforestry-center" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/land/forests/national-agroforestry-center</a></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div id="analysis" class="section level1">
