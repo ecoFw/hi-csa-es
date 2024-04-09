@@ -492,9 +492,31 @@ for (i in seq_len(length(nrc.cat))){
 
 nrc.tab &lt;- cbind(do.call(rbind, nrc.cat), nrc.url)
 colnames(nrc.tab) &lt;- c(&quot;Category&quot;, 
-                       paste0(rep(&quot;Sub-Category&quot;), (ncol(nrc.tab) - 2), 
-                       1:(ncol(nrc.tab) - 2)), 
+                       paste0(&quot;Sub-Category &quot;, seq(1, ncol(nrc.tab)-2)),
                        &quot;Resource&quot;)</code></pre>
+<p>Data from <a href="https://www.nrcs.usda.gov/sites/default/files/2023-10/NRCS-CSAF-Mitigation-Activities-List.pdf">NRCS</a>
+were extracted manually using <a href="https://tabula.technology/" title="tabula">tabula</a>.</p>
+<pre class="r"><code>csa.mit.tab &lt;- read.csv(&quot;data/tabula-NRCS-CSAF-Mitigation-Activities.csv&quot;, header = FALSE)
+csa.mit.head &lt;- csa.mit.tab[grepl(&quot;Mitigation Categories&quot;, csa.mit.tab[, 1]), ]
+csa.mit.head &lt;- gsub(&quot;\\[.*?\\]&quot;, &quot;&quot;, csa.mit.head)
+csa.mit.head &lt;- gsub(&quot;  &quot;, &quot; &quot;, csa.mit.head)
+colnames(csa.mit.tab) &lt;- csa.mit.head
+csa.mit.tab &lt;- apply(csa.mit.tab, 2, gsub, pattern = &quot;\\[.*?\\]&quot;, replace = &quot;&quot;)
+csa.mit.tab &lt;- apply(csa.mit.tab, 2, gsub, pattern = &quot;  &quot;, replace = &quot; &quot;)
+
+## Removing narrative crosswalk
+csa.cwk &lt;- csa.mit.tab[seq(grep(&quot;Waste Storage Structure&quot;, csa.mit.tab[, 2]), nrow(csa.mit.tab)), ]
+colnames(csa.cwk)[4] &lt;- &quot;Narrative&quot;
+csa.mit.tab &lt;-csa.mit.tab[-seq(grep(&quot;Waste Storage Structure&quot;, csa.mit.tab[, 2]), nrow(csa.mit.tab)), ]
+
+## Generate urls for codes
+csa.mit.tab[!(grepl(&quot;E&quot;, csa.mit.tab[, &quot;Code&quot;])), &quot;Code&quot;] &lt;- &quot;&quot;
+csa.mit.url &lt;- paste0(&quot;https://www.nrcs.usda.gov/sites/default/files/2022-11/&quot;, 
+                      csa.mit.tab[, &quot;Code&quot;],
+                      &quot;_July_2022.pdf&quot;)
+csa.mit.url &lt;- gsub(&quot; &quot;, &quot;-&quot;, csa.mit.url)
+csa.mit.url[csa.mit.tab[, &quot;Code&quot;] == &quot;&quot;] &lt;- &quot;&quot;
+csa.mit.tab &lt;- data.frame(csa.mit.tab, &quot;URL&quot; = csa.mit.url)</code></pre>
 <table>
 <colgroup>
 <col width="11%" />
@@ -505,8 +527,8 @@ colnames(nrc.tab) &lt;- c(&quot;Category&quot;,
 <thead>
 <tr class="header">
 <th align="left">Category</th>
-<th align="left">Sub-Category21</th>
-<th align="left">Sub-Category22</th>
+<th align="left">Sub-Category 1</th>
+<th align="left">Sub-Category 2</th>
 <th align="left">Resource</th>
 </tr>
 </thead>
@@ -804,6 +826,2311 @@ colnames(nrc.tab) &lt;- c(&quot;Category&quot;,
 <td align="left">forests</td>
 <td align="left">national-agroforestry-center</td>
 <td align="left"><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/land/forests/national-agroforestry-center" class="uri">https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/land/forests/national-agroforestry-center</a></td>
+</tr>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col width="25%" />
+<col width="1%" />
+<col width="21%" />
+<col width="26%" />
+<col width="24%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Mitigation.Categories.</th>
+<th align="left">Code</th>
+<th align="left">Conservation.Practice.Standard.Name..practice.unit.</th>
+<th align="left">V4</th>
+<th align="left">URL</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Soil Health</td>
+<td align="left"></td>
+<td align="left">Conservation Cover (acres) E327A</td>
+<td align="left">Conservation cover for pollinators and beneficial
+insects</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E327B</td>
+<td align="left">Establish Monarch butterfly habitat</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Conservation Crop Rotation E328A</td>
+<td align="left">Resource conserving crop rotation</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">(acres) E328B</td>
+<td align="left">Improved resource conserving crop rotation</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E328E</td>
+<td align="left">Soil health crop rotation</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E328F</td>
+<td align="left">Modifications to improve soil health and increase soil
+organic matter</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E328N</td>
+<td align="left">Intercropping to improve soil health</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E328O</td>
+<td align="left">Perennial grain crop conservation rotation</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Residue and Tillage E329A</td>
+<td align="left">No till to reduce soil erosion</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Management, No Till (acres) E329B</td>
+<td align="left">No till to reduce tillage induced particulate
+matter</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E329C</td>
+<td align="left">No till to increase plant-available moisture</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E329D</td>
+<td align="left">No till system to increase soil health and soil organic
+matter content</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E329E</td>
+<td align="left">No till to reduce energy</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Contour Buffer Strips (acres)</td>
+<td align="left">None Available</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Soil Carbon Amendment</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">None Available(acres)*</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Cover Crop (acres) E340A</td>
+<td align="left">Cover crop to reduce soil erosion</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E340B</td>
+<td align="left">Intensive cover cropping to increase soil health and
+soil organic matter content</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E340C</td>
+<td align="left">Use of multi-species cover crops to improve soil health
+and increase soil</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">organic matter</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E340D</td>
+<td align="left">Intensive orchard/vineyard floor cover cropping to
+increase soil health</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E340F</td>
+<td align="left">Cover crop to minimize soil compaction</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E340G</td>
+<td align="left">Cover crop to reduce water quality degradation by
+utilizing excess soil</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">nutrients</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E340H</td>
+<td align="left">Cover crop to suppress excessive weed pressures and
+break pest cycles</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E340I</td>
+<td align="left">Using cover crops for biological strip till</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E340J</td>
+<td align="left">Cover crop to improve moisture use efficiency and
+reduce salts</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Residue and Tillage E345A</td>
+<td align="left">Reduced tillage to reduce soil erosion</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Management, Reduced Till E345B</td>
+<td align="left">Reduced tillage to reduce tillage induced particulate
+matter</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">(acres)</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E345C</td>
+<td align="left">Reduced tillage to increase plant-available
+moisture</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E345D</td>
+<td align="left">Reduced tillage to increase soil health and soil
+organic matter content</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E345E</td>
+<td align="left">Reduced tillage to reduce energy use</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Soil Health</td>
+<td align="left"></td>
+<td align="left">Field Border (acres) E386A</td>
+<td align="left">Enhanced field borders to reduce soil erosion along the
+edge(s) of a field</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E386B</td>
+<td align="left">Enhanced field borders to increase carbon storage along
+the edge(s)</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">of the field</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E386C</td>
+<td align="left">Enhanced field borders to decrease particulate
+emissions along the edge(s)</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">of the field</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E386D</td>
+<td align="left">Enhanced field borders to increase food for pollinators
+along the edge(s) of</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">a field</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E386E</td>
+<td align="left">Enhanced field borders to increase wildlife food and
+habitat along the</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">edge(s) of a field</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Filter Strips (acres) E393A</td>
+<td align="left">Extend existing filter strip to reduce water quality
+impacts</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Grassed Waterways (acres) E412A</td>
+<td align="left">Enhance a grassed waterway</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Mulching (acres) E484A</td>
+<td align="left">Mulching to improve soil health</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E484B</td>
+<td align="left">Reduce particulate matter emissions by using orchard or
+vineyard</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">generated woody materials as mulch</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E484C</td>
+<td align="left">Mulching with natural materials in specialty crops for
+weed control</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E484D</td>
+<td align="left">Lowbush Blueberry Mulching for Moisture Management</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Stripcropping (acres)</td>
+<td align="left">None Available</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Vegetative Barriers (feet)</td>
+<td align="left">None Available</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Herbaceous Wind Barriers (feet)</td>
+<td align="left">None Available</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Nitrogen</td>
+<td align="left"></td>
+<td align="left">Nutrient Management (acres) E590A</td>
+<td align="left">Improving nutrient uptake efficiency and reducing risk
+of nutrient losses</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Management</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E590B</td>
+<td align="left">Reduce risks of nutrient loss to surface water by
+utilizing precision</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">agriculture technologies</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E590C</td>
+<td align="left">Improving nutrient uptake efficiency and reducing risk
+of nutrient losses on</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">pasture</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E590D</td>
+<td align="left">Reduce risks of nutrient losses to surface and
+groundwater by increasing</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">setback awareness via precision technology</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Livestock</td>
+<td align="left"></td>
+<td align="left">Composting Facility (number)*</td>
+<td align="left">None Available</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Partnership</td>
+<td align="left"></td>
+<td align="left">Waste Storage Facility</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">(number)*</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">None Available• Used to implement</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">compost bedded-pack</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Anaerobic Digester (number)</td>
+<td align="left">None Available</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Roofs and Covers (number)*</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">• Used to cover a waste</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">None Availablemanagement facility to</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">capture biogas</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Feed Management</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">(animal unit)*</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">None Available• Used to reduce enteric</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">methane emissions</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Waste Separation Facility</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">None Available(number)*</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Grazing and</td>
+<td align="left"></td>
+<td align="left">Brush Management (acres)*</td>
+<td align="left">E314A</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Brush management to improve wildlife habitat*</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Pasture</td>
+<td align="left"></td>
+<td align="left">• Used to remove woody</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">invasive vegetation and</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">the removed material will</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">be left onsite.</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Herbaceous Weed Treatment</td>
+<td align="left">E315A</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Herbaceous weed treatment to create desired plant
+communities</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">(acres)*</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">consistent with the ecological site*</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">• Used to release desired</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">deep rooted perennial</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">species.</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Prescribed Burning (acres)*</td>
+<td align="left">E338A</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Strategically planned, patch burning for grazing
+distribution and wildlife</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">habitat*</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Pasture and Hay Planting</td>
+<td align="left">E512A</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Cropland conversion to grass-based agriculture to
+reduce soil erosion</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">(acres)</td>
+<td align="left">E512B</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Forage and biomass planting to reduce soil erosion or
+increase organic</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">matter to build soil health</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E512C</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Cropland conversion to grass for soil organic matter
+improvement</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E512D</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Forage plantings that help increase organic matter in
+depleted soils</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E512I</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Establish pollinator and/or beneficial insect and/or
+monarch habitat</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E512J</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Establish wildlife corridors to provide habitat
+continuity or access to water</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E512L</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Diversifying forage base with interseeding forbs and
+legumes to increase</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">pasture quality</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E512M</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Forage plantings that improve wildlife habitat cover
+and shelter or</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">structure and composition</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Prescribed Grazing (acres)</td>
+<td align="left">E528A</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Maintaining quantity and quality of forage for animal
+health</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">and productivity</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E528F</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Stockpiling cool season forage to improve structure and
+composition or</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">plant productivity and health</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E528G</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Improved grazing management on pasture for plant
+productivity and health</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">with monitoring activities</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E528H</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Prescribed grazing to improve/maintain riparian and
+watershed function-</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">elevated water temperature</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E528I</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Grazing management that protects sensitive areas
+-surface or ground water</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">from nutrients</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E528J</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Prescribed grazing on pastureland that improves
+riparian and watershed</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">function</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E528L</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Prescribed grazing that improves or maintains riparian
+and watershed</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">function-erosion</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E528M</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Grazing management that protects sensitive areas from
+gully erosion</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E528N</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Improved grazing management through monitoring
+activities</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E528O</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Clipping mature forages to set back vegetative growth
+for improved forage</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">quality</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Grazing and</td>
+<td align="left"></td>
+<td align="left">Prescribed Grazing (acres)</td>
+<td align="left">E528P</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Implementing Bale or Swath Grazing to increase organic
+matter and reduce</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Pasture</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">nutrients in surface water</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E528R</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Management intensive rotational grazing</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E528S</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Soil Health Improvements on Pasture</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E528T</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Grazing to Reduce Wildfire Risks on Forests</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E528U</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Contingency Planning for Resiliency</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Range Planting (acres)</td>
+<td align="left">E550A</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Range planting for increasing/maintaining organic
+matter</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E550B</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Range planting for improving forage, browse, or cover
+for wildlife</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Agroforestry,</td>
+<td align="left"></td>
+<td align="left">Alley Cropping (acres)</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">None Available</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Forestry and</td>
+<td align="left"></td>
+<td align="left">Critical Area Planting (acres)</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Wildlife</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">None Available</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Habitat</td>
+<td align="left"></td>
+<td align="left">Forest Farming (acres)</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">None Available</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Windbreaks/Shelterbelt</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Establishment and</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">None Available</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Renovation (feet)</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Silvopasture (acres)</td>
+<td align="left">E381A</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Silvopasture to improve wildlife habitat</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Fuel Break (acres)*</td>
+<td align="left">E383A</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Grazing-maintained fuel break to reduce the risk of
+fire*</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Woody Residue Treatment</td>
+<td align="left">E384A</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Biochar production from woody residue*</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">(acres)*</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Riparian Herbaceous Cover</td>
+<td align="left">E390A</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Increase riparian herbaceous cover width for sediment
+and nutrient</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">(acres)</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">reduction</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E390B</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Increase riparian herbaceous cover width to enhance
+wildlife habitat</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Riparian Forest Buffer (acres)</td>
+<td align="left">E391A</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Increase riparian forest buffer width for sediment and
+nutrient reduction</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E391B</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Increase stream shading for stream temperature
+reduction</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E391C</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Increase riparian forest buffer width to enhance
+wildlife habitat</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Wildlife Habitat Planting</td>
+<td align="left">E420A</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Establish pollinator habitat*</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">(acres)*</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E420B</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Establish monarch butterfly habitat*</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Hedgerow Planting (feet)</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">None Available</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Tree-Shrub Establishment</td>
+<td align="left">E612B</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Planting for high carbon sequestration rate</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">(acres)</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E612C</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Establishing tree/shrub species to restore native plant
+communities</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E612G</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Tree/shrub planting for wildlife food</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Restoration of Rare</td>
+<td align="left">E643D</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Low-tech process-based restoration to enhance
+floodplain connectivity*</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">or Declining Natural</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Communities (ac)*</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">• Used to restore</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">floodplain hydrology</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Forest Stand Improvement</td>
+<td align="left">E666A</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Maintaining and improving forest soil quality*</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">(acres)*</td>
+<td align="left">E666D</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Forest management to enhance understory
+vegetation*</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E666E</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Reduce height of the forest understory to limit
+wildfire risk*</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">E666F</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Reduce forest stand density to create open stand
+structure*</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Mitigation Categories</td>
+<td align="left"></td>
+<td align="left">Conservation Practice Standard Name (practice
+unit)</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Conservation Stewardship Program (CSP) Enhancement
+Activities</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Agroforestry,</td>
+<td align="left"></td>
+<td align="left">Forest Stand Improvement</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">E666H</td>
+<td align="left">Increase on-site carbon storage*</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/sites/default/files/2022-11/E666H_July_2022.pdf" class="uri">https://www.nrcs.usda.gov/sites/default/files/2022-11/E666H_July_2022.pdf</a></td>
+</tr>
+<tr class="even">
+<td align="left">Forestry and</td>
+<td align="left"></td>
+<td align="left">(acres)*</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">E666I</td>
+<td align="left">Crop tree management for mast production*</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/sites/default/files/2022-11/E666I_July_2022.pdf" class="uri">https://www.nrcs.usda.gov/sites/default/files/2022-11/E666I_July_2022.pdf</a></td>
+</tr>
+<tr class="even">
+<td align="left">Wildlife</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Habitat</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">E666J</td>
+<td align="left">Facilitating oak forest regeneration*</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/sites/default/files/2022-11/E666J_July_2022.pdf" class="uri">https://www.nrcs.usda.gov/sites/default/files/2022-11/E666J_July_2022.pdf</a></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">E666K</td>
+<td align="left">Creating structural diversity with patch openings*</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/sites/default/files/2022-11/E666K_July_2022.pdf" class="uri">https://www.nrcs.usda.gov/sites/default/files/2022-11/E666K_July_2022.pdf</a></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">E666L</td>
+<td align="left">Forest Stand Improvement to rehabilitate degraded
+hardwood stands*</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/sites/default/files/2022-11/E666L_July_2022.pdf" class="uri">https://www.nrcs.usda.gov/sites/default/files/2022-11/E666L_July_2022.pdf</a></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">E666P</td>
+<td align="left">Summer roosting habitat for native forest-dwelling bat
+species*</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/sites/default/files/2022-11/E666P_July_2022.pdf" class="uri">https://www.nrcs.usda.gov/sites/default/files/2022-11/E666P_July_2022.pdf</a></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">E666R</td>
+<td align="left">Forest songbird habitat maintenance*</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/sites/default/files/2022-11/E666R_July_2022.pdf" class="uri">https://www.nrcs.usda.gov/sites/default/files/2022-11/E666R_July_2022.pdf</a></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">E666S</td>
+<td align="left">Facilitating longleaf pine regeneration and
+establishment*</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/sites/default/files/2022-11/E666S_July_2022.pdf" class="uri">https://www.nrcs.usda.gov/sites/default/files/2022-11/E666S_July_2022.pdf</a></td>
+</tr>
+<tr class="even">
+<td align="left">Restoration None Availableof Disturbed</td>
+<td align="left"></td>
+<td align="left">Land Reclamation, Landslide Treatment (acres)</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Lands</td>
+<td align="left"></td>
+<td align="left">Land Reclamation,</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Abandoned Mined Land</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">None Available</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">(acres)</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Energy,</td>
+<td align="left"></td>
+<td align="left">Combustion System</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">E372A</td>
+<td align="left">Switch to Renewable Power Source</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/sites/default/files/2022-11/E372A_July_2022.pdf" class="uri">https://www.nrcs.usda.gov/sites/default/files/2022-11/E372A_July_2022.pdf</a></td>
+</tr>
+<tr class="even">
+<td align="left">Combustion,</td>
+<td align="left"></td>
+<td align="left">Improvement (number)</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">&amp; Electricity</td>
+<td align="left"></td>
+<td align="left">• Used for stationary</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">E372B</td>
+<td align="left">Renewable Energy Source for Large Internal Combustion
+Engines</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/sites/default/files/2022-11/E372B_July_2022.pdf" class="uri">https://www.nrcs.usda.gov/sites/default/files/2022-11/E372B_July_2022.pdf</a></td>
+</tr>
+<tr class="even">
+<td align="left">Efficiency</td>
+<td align="left"></td>
+<td align="left">or mobile engine</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">replacement or repower</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">to electric motor</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Energy Efficient Agricultural</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">None Available</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Operation (number)*</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Irrigation Pipeline (feet)*</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">None Available</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">• Used to reduce energy</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">use</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Irrigation System,</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">None Available</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Microirrigation (acres)*</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">• Used to reduce energy</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">use</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Sprinkler System (acres)*</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">None Available</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">• Used to reduce energy</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">use</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Pumping Plant (number)*</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">E533C</td>
+<td align="left">Install VFDs on pumps*</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/sites/default/files/2022-11/E533C_July_2022.pdf" class="uri">https://www.nrcs.usda.gov/sites/default/files/2022-11/E533C_July_2022.pdf</a></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">• Used to reduce energy</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">use</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">E533D</td>
+<td align="left">Switch fuel source for pumps*</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/sites/default/files/2022-11/E533D_July_2022.pdf" class="uri">https://www.nrcs.usda.gov/sites/default/files/2022-11/E533D_July_2022.pdf</a></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Energy Efficient Building</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">None AvailableEnvelope (number)*</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Energy Efficient Lighting</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">None AvailableSystem (number)*</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Wetlands</td>
+<td align="left"></td>
+<td align="left">Wetland Restoration (acres)*</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">None Available</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Rice</td>
+<td align="left"></td>
+<td align="left">Irrigation Water Management</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">E449B</td>
+<td align="left">Alternated Wetting and Drying (AWD) of rice
+fields*</td>
+<td align="left"></td>
+<td align="left"><a href="https://www.nrcs.usda.gov/sites/default/files/2022-11/E449B_July_2022.pdf" class="uri">https://www.nrcs.usda.gov/sites/default/files/2022-11/E449B_July_2022.pdf</a></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">(acres)*</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">• Used as part of an</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">alternated wetting and</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">drying (AWD) system in</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">rice fields</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>
