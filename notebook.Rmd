@@ -215,6 +215,15 @@ colnames(csa.cwk)[4] <- "Narrative"
 csa.mit.tab <-csa.mit.tab[-seq(grep("Waste Storage Structure", csa.mit.tab[, 2]), nrow(csa.mit.tab)), ]
 
 ## Generate urls for codes
+get.codes <- function(x){
+    x <- paste0(x, collapse = " ")
+    x <- unlist(strsplit(x, split = " "))
+    x <- x[grep("E[0-9][0-9][0-9][a-z,A-Z]", x)]
+    return(x)
+}
+
+csa.mit.codes <- unlist(lapply(apply(csa.mit.tab, 1, get.codes), function(x) x[1]))
+csa.mit.tab[, "Code"] <- csa.mit.codes
 csa.mit.tab[!(grepl("E", csa.mit.tab[, "Code"])), "Code"] <- ""
 csa.mit.url <- paste0("https://www.nrcs.usda.gov/sites/default/files/2022-11/", 
                       csa.mit.tab[, "Code"],
