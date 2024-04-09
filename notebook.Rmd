@@ -195,6 +195,17 @@ colnames(nrc.tab) <- c("Category",
 
 ```
 
+
+Data from [NRCS](https://www.nrcs.usda.gov/sites/default/files/2023-10/NRCS-CSAF-Mitigation-Activities-List.pdf)
+were extracted manually using [tabula](https://tabula.technology/ "tabula").
+
+```{r nrcs-pdf-tables, }
+
+
+
+```
+
+
 ```{r csa-table, echo=FALSE, message=FALSE, warnings=FALSE, results='asis'}
 
 kable(nrc.tab)

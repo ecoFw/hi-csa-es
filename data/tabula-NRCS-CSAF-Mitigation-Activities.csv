@@ -1,0 +1,241 @@
+Soil Health,327,Conservation Cover (acres) E327A,Conservation cover for pollinators and beneficial insects[2]
+"",,E327B,Establish Monarch butterfly habitat
+"",328,Conservation Crop Rotation E328A,Resource conserving crop rotation
+"",,(acres) E328B,Improved resource conserving crop rotation
+"",,E328E,Soil health crop rotation
+"",,E328F,Modifications to improve soil health and increase soil organic matter
+"",,E328N,Intercropping to improve soil health
+"",,E328O,Perennial grain crop conservation rotation
+"",329,Residue and Tillage E329A,No till to reduce soil erosion
+"",,"Management, No Till (acres) E329B",No till to reduce tillage induced particulate matter
+"",,E329C,No till to increase plant-available moisture
+"",,E329D,No till system to increase soil health and soil organic matter content
+"",,E329E,No till to reduce energy
+"",332,Contour Buffer Strips (acres),None Available
+"",336,Soil Carbon Amendment,
+"",,None Available(acres)*,
+"",340,Cover Crop (acres) E340A,Cover crop to reduce soil erosion
+"",,E340B,Intensive cover cropping to increase soil health and soil organic matter content
+"",,E340C,Use of multi-species cover crops to improve soil health and increase soil
+"",,,organic matter
+"",,E340D,Intensive orchard/vineyard floor cover cropping to increase soil health
+"",,E340F,Cover crop to minimize soil compaction
+"",,E340G,Cover crop to reduce water quality degradation by utilizing excess soil
+"",,,nutrients
+"",,E340H,Cover crop to suppress excessive weed pressures and break pest cycles
+"",,E340I,Using cover crops for biological strip till
+"",,E340J,Cover crop to improve moisture use efficiency and reduce salts
+"",345,Residue and Tillage E345A,Reduced tillage to reduce soil erosion
+"",,"Management, Reduced Till E345B",Reduced tillage to reduce tillage induced particulate matter
+"",,(acres),
+"",,E345C,Reduced tillage to increase plant-available moisture
+"",,E345D,Reduced tillage to increase soil health and soil organic matter content
+"",,E345E,Reduced tillage to reduce energy use
+Soil Health,386,Field Border (acres) E386A,Enhanced field borders to reduce soil erosion along the edge(s) of a field
+"",,E386B,Enhanced field borders to increase carbon storage along the edge(s)
+"",,,of the field
+"",,E386C,Enhanced field borders to decrease particulate emissions along the edge(s)
+"",,,of the field
+"",,E386D,Enhanced field borders to increase food for pollinators along the edge(s) of
+"",,,a field
+"",,E386E,Enhanced field borders to increase wildlife food and habitat along the
+"",,,edge(s) of a field
+"",393,Filter Strips (acres) E393A,Extend existing filter strip to reduce water quality impacts
+"",412,Grassed Waterways (acres) E412A,Enhance a grassed waterway
+"",484,Mulching (acres) E484A,Mulching to improve soil health
+"",,E484B,Reduce particulate matter emissions by using orchard or vineyard
+"",,,generated woody materials as mulch
+"",,E484C,Mulching with natural materials in specialty crops for weed control
+"",,E484D,Lowbush Blueberry Mulching for Moisture Management
+"",585,Stripcropping (acres),None Available
+"",601,Vegetative Barriers (feet),None Available
+"",603,Herbaceous Wind Barriers (feet),None Available
+Nitrogen,590,Nutrient Management (acres) E590A,Improving nutrient uptake efficiency and reducing risk of nutrient losses
+Management,,,
+"",,E590B,Reduce risks of nutrient loss to surface water by utilizing precision
+"",,,agriculture technologies
+"",,E590C,Improving nutrient uptake efficiency and reducing risk of nutrient losses on
+"",,,pasture
+"",,E590D,Reduce risks of nutrient losses to surface and groundwater by increasing
+"",,,setback awareness via precision technology
+Livestock,317,Composting Facility (number)*,None Available
+Partnership,313,Waste Storage Facility,
+"",,(number)*,
+"",,None Available• Used to implement,
+"",,compost bedded-pack[4],
+"",366,Anaerobic Digester (number),None Available
+"",367,Roofs and Covers (number)*,
+"",,• Used to cover a waste,
+"",,None Availablemanagement facility to,
+"",,capture biogas[4],
+"",592,Feed Management,
+"",,(animal unit)*,
+"",,None Available• Used to reduce enteric,
+"",,methane emissions [4],
+"",632,Waste Separation Facility,
+"",,None Available(number)*,
+Grazing and,314,Brush Management (acres)*,E314A,Brush management to improve wildlife habitat*
+Pasture,,• Used to remove woody,,
+"",,invasive vegetation and,,
+"",,the removed material will,,
+"",,be left onsite. [4],,
+"",315,Herbaceous Weed Treatment,E315A,Herbaceous weed treatment to create desired plant communities
+"",,(acres)*,,consistent with the ecological site*
+"",,• Used to release desired,,
+"",,deep rooted perennial,,
+"",,species. [4],,
+"",338,Prescribed Burning (acres)*,E338A,"Strategically planned, patch burning for grazing distribution and wildlife"
+"",,,,habitat*
+"",512,Pasture and Hay Planting,E512A,Cropland conversion to grass-based agriculture to reduce soil erosion
+"",,(acres),E512B,Forage and biomass planting to reduce soil erosion or increase organic
+"",,,,matter to build soil health
+"",,,E512C,Cropland conversion to grass for soil organic matter improvement
+"",,,E512D,Forage plantings that help increase organic matter in depleted soils
+"",,,E512I,Establish pollinator and/or beneficial insect and/or monarch habitat
+"",,,E512J,Establish wildlife corridors to provide habitat continuity or access to water
+"",,,E512L,Diversifying forage base with interseeding forbs and legumes to increase
+"",,,,pasture quality
+"",,,E512M,Forage plantings that improve wildlife habitat cover and shelter or
+"",,,,structure and composition
+"",528,Prescribed Grazing (acres),E528A,Maintaining quantity and quality of forage for animal health
+"",,,,and productivity
+"",,,E528F,Stockpiling cool season forage to improve structure and composition or
+"",,,,plant productivity and health
+"",,,E528G,Improved grazing management on pasture for plant productivity and health
+"",,,,with monitoring activities
+"",,,E528H,Prescribed grazing to improve/maintain riparian and watershed function-
+"",,,,elevated water temperature
+"",,,E528I,Grazing management that protects sensitive areas -surface or ground water
+"",,,,from nutrients
+"",,,E528J,Prescribed grazing on pastureland that improves riparian and watershed
+"",,,,function
+"",,,E528L,Prescribed grazing that improves or maintains riparian and watershed
+"",,,,function-erosion
+"",,,E528M,Grazing management that protects sensitive areas from gully erosion
+"",,,E528N,Improved grazing management through monitoring activities
+"",,,E528O,Clipping mature forages to set back vegetative growth for improved forage
+"",,,,quality
+Grazing and,528,Prescribed Grazing (acres),E528P,Implementing Bale or Swath Grazing to increase organic matter and reduce
+Pasture,,,,nutrients in surface water
+"",,,E528R,Management intensive rotational grazing
+"",,,E528S,Soil Health Improvements on Pasture
+"",,,E528T,Grazing to Reduce Wildfire Risks on Forests
+"",,,E528U,Contingency Planning for Resiliency
+"",550,Range Planting (acres),E550A,Range planting for increasing/maintaining organic matter
+"",,,E550B,"Range planting for improving forage, browse, or cover for wildlife"
+"Agroforestry,",311,Alley Cropping (acres),,None Available
+Forestry and,342,Critical Area Planting (acres),,
+Wildlife,,,,None Available
+Habitat,379,Forest Farming (acres),,None Available
+"",380,Windbreaks/Shelterbelt,,
+"",,Establishment and,,None Available
+"",,Renovation (feet),,
+"",381,Silvopasture (acres),E381A,Silvopasture to improve wildlife habitat
+"",383,Fuel Break (acres)*,E383A,Grazing-maintained fuel break to reduce the risk of fire*
+"",384,Woody Residue Treatment,E384A,Biochar production from woody residue*
+"",,(acres)*,,
+"",390,Riparian Herbaceous Cover,E390A,Increase riparian herbaceous cover width for sediment and nutrient
+"",,(acres),,reduction
+"",,,E390B,Increase riparian herbaceous cover width to enhance wildlife habitat
+"",391,Riparian Forest Buffer (acres),E391A,Increase riparian forest buffer width for sediment and nutrient reduction
+"",,,E391B,Increase stream shading for stream temperature reduction
+"",,,E391C,Increase riparian forest buffer width to enhance wildlife habitat
+"",420,Wildlife Habitat Planting,E420A,Establish pollinator habitat*
+"",,(acres)*,,
+"",,,E420B,Establish monarch butterfly habitat*
+"",422,Hedgerow Planting (feet),,None Available
+"",612,Tree-Shrub Establishment,E612B,Planting for high carbon sequestration rate
+"",,(acres),,
+"",,,E612C,Establishing tree/shrub species to restore native plant communities
+"",,,E612G,Tree/shrub planting for wildlife food
+"",643,Restoration of Rare,E643D,Low-tech process-based restoration to enhance floodplain connectivity*
+"",,or Declining Natural,,
+"",,Communities (ac)*,,
+"",,• Used to restore,,
+"",,floodplain hydrology [4],,
+"",,Forest Stand Improvement,E666A,Maintaining and improving forest soil quality*
+"",666,(acres)*,E666D,Forest management to enhance understory vegetation*
+"",,,E666E,Reduce height of the forest understory to limit wildfire risk*
+"",,,E666F,Reduce forest stand density to create open stand structure*
+Mitigation Categories [5],Code,Conservation Practice Standard Name[2] [3] (practice unit),,,Code,Conservation Stewardship Program (CSP) Enhancement Activities
+"Agroforestry,",666,Forest Stand Improvement,,,E666H,Increase on-site carbon storage*
+Forestry and,,(acres)*,,,E666I,Crop tree management for mast production*
+Wildlife,,,,,,
+Habitat,,,,,E666J,Facilitating oak forest regeneration*
+"",,,,,E666K,Creating structural diversity with patch openings*
+"",,,,,E666L,Forest Stand Improvement to rehabilitate degraded hardwood stands*
+"",,,,,E666P,Summer roosting habitat for native forest-dwelling bat species*
+"",,,,,E666R,Forest songbird habitat maintenance*
+"",,,,,E666S,Facilitating longleaf pine regeneration and establishment*
+Restoration None Availableof Disturbed,453,"Land Reclamation, Landslide Treatment (acres)",,,,
+Lands,543,"Land Reclamation,",,,,
+"",,Abandoned Mined Land,,,,None Available
+"",,(acres),,,,
+"Energy,",372,Combustion System,,,E372A,Switch to Renewable Power Source
+"Combustion,",,Improvement (number),,,,
+"& Electricity",,• Used for stationary,,,E372B,Renewable Energy Source for Large Internal Combustion Engines
+Efficiency,,or mobile engine,,,,
+"",,replacement or repower,,,,
+"",,to electric motor,,,,
+"",374,Energy Efficient Agricultural,,,,None Available
+"",,Operation (number)*,,,,
+"",430,Irrigation Pipeline (feet)*,,,,None Available
+"",,• Used to reduce energy,,,,
+"",,use [4],,,,
+"",441,"Irrigation System,",,,,None Available
+"",,Microirrigation (acres)*,,,,
+"",,• Used to reduce energy,,,,
+"",,use [4],,,,
+"",442,Sprinkler System (acres)*,,,,None Available
+"",,• Used to reduce energy,,,,
+"",,use [4],,,,
+"",533,Pumping Plant (number)*,,,E533C,Install VFDs on pumps*
+"",,• Used to reduce energy,,,,
+"",,use [4],,,E533D,Switch fuel source for pumps*
+"",672,Energy Efficient Building,,,,
+"",,None AvailableEnvelope (number)*,,,,
+"",670,Energy Efficient Lighting,,,,
+"",,None AvailableSystem (number)*,,,,
+Wetlands,657,Wetland Restoration (acres)*,,,,None Available
+Rice,449,Irrigation Water Management,,,E449B,Alternated Wetting and Drying (AWD) of rice fields*
+"",,(acres)*,,,,
+"",,• Used as part of an,,,,
+"",,alternated wetting and,,,,
+"",,drying (AWD) system in,,,,
+"",,rice fields,,,,
+313,Waste Storage Structure,01N,Compost Bedded Pack waste storage facility - a livestock agricultural waste storage
+"",,,fabricated structure where manure is composted within the animal housing
+314,Brush Management,03N,Remove woody (non-herbaceous and succulent) invasive vegetation to maintain
+"",,,"or enhance deep rooted native perennial grass and forb communities, leaving"
+"",,,treated woody material onsite to mitigate above ground carbon loss
+315,Herbaceous Weed Treatment,01N,Remove or treat herbaceous weeds to release desired deep rooted perennial
+"",,,grass and forb species
+367,Roofs and Covers,01N,"Capture Biogas - Place a rigid, semirigid, or flexible manufactured membrane,"
+"",,,"composite material, or roof structure placed over a waste management facility to"
+"",,,capture biogas and reduce odor
+372,Combustion System,02N,Stationary engine to electric motor replacement or repower - Replace or repower
+"",Improvement,,an existing stationary engine with an electric motor
+372,Combustion System,05N,Mobile internal combustion engine to electric motor replacement - Replace an
+"",Improvement,,"existing on-farm mobile device (i.e., tractor, loader, forklift, etc.) powered by an"
+"",,,internal combustion engine with a new mobile device powered by an electric motor
+430,Irrigation Pipeline,01N,Replacement of an earthen channel that is supplied by pumping water with a closed
+"",,,"conduit, resulting in enhanced conveyance efficiency and reduced energy use"
+441,"Irrigation System,",02N,Switching from higher to lower pressure irrigation systems without increasing
+"",Microirrigation,,"irrigated acres, resulting in enhanced application efficiency and reduced energy use"
+442,Sprinkler System,02N,"Utilization of variable rate irrigation (VRI) technology, switching from higher"
+"",,,"to lower pressure irrigation systems, and sprinkler head renozzling without"
+"",,,"increasing irrigated acres, resulting in enhanced application efficiency and"
+"",,,reduced energy use
+449,Irrigation Water Management,03N,Managing water levels in rice fields to include dry down between full flood conditions
+"",,,prior to re-flooding (alternated wetting and drying) to minimize greenhouse gas
+"",,,production in accordance with an irrigation water management plan
+533,Pumping Plant,02N,Replacing existing pump with high-efficiency pump resulting in reduced
+"",,,energy use
+592,Feed Management,03N,Reduce enteric methane emissions from animal feeding operations by manipulating
+"",,,"the quantity and quality of dietary nutrients, incorporating feed additives and feed"
+"",,,"ingredients, or adjusting concentrate to forage ratio in livestock and poultry diets"
+"",,,to lower methane produced and emitted during digestion
+643,Restoration of Rare or,01N,Restoration of streams and associated floodplains using low-tech structures (such
+"",Declining Natural Communities,,as beaver dam analogs or other stick-and-stone structures) to kick-start natural
+"",,,ecological and hydrologic processes required for maintenance of healthy and
+"",,,functioning streams and associated floodplains
