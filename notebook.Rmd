@@ -34,6 +34,7 @@ sustainable agriculture to produce the contracted deliverables.
 
 - CSA-ES literature synthesis
 - CSA-ES Resource Database
+- CSA Policy 1-pager
 
 # Data Pipeline Design
 
