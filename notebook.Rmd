@@ -79,7 +79,7 @@ Other government data:
 library(pacman)
 p_load(litsearchr, rcrossref, purrr, wordcloud, 
        tm, RColorBrewer, ggplot2, Rcrawler, rvest, 
-       knitr)
+       knitr, googlesheets4, dplyr)
 
 ```
 
@@ -258,6 +258,61 @@ kable(csa.mit.tab)
 ```
 
 
+
+# Database Construction
+
+
+
+## Merge Data Streams
+
+```{r merge-dbs}
+
+db_merge <- function(x, y){
+    cn.x <- colnames(x)
+    cn.y <- colnames(y)
+    cn.xy <- cn.y[!(cn.y %in% cn.x)]
+    xy <- data.frame(array(dim = c(nrow(x), length(cn.xy))))
+    xy <- data.frame(x, xy)
+    colnames(xy) <- c(colnames(x), cn.xy)
+    xy <- xy[ ,order(colnames(xy))]
+    cn.yx <- cn.x[!(cn.x %in% cn.y)]
+    yx <- data.frame(array(dim = c(nrow(y), length(cn.yx))))
+    yx <- data.frame(y, yx)
+    colnames(yx) <- c(colnames(y), cn.yx)
+    yx <- yx[ ,order(colnames(yx))]
+    out <- rbind(xy, yx)
+    return(out)
+}
+
+
+db.og <- as.data.frame(read_sheet("https://docs.google.com/spreadsheets/d/1AMlsLPDnwt01eEsBLdRe1hvhNSa3ofndcWX0gJ9xbUo/", sheet = "Original"))
+db.jh <- as.data.frame(read_sheet("https://docs.google.com/spreadsheets/d/1AMlsLPDnwt01eEsBLdRe1hvhNSa3ofndcWX0gJ9xbUo/", sheet = "Jackson's Version"))
+
+db.mg <- db_merge(db.og, db.jh) %>% 
+    distinct
+
+colnames(db.og)[colnames(db.og) == "Resources (Links)"] <- "Resource"
+colnames(nrc.tab)[colnames(nrc.tab) == "Sub-Category 1"] <- "Sub-Category"
+
+db.csa <- db_merge(db.og, nrc.tab)
+
+
+gs4_auth("mklau3@hawaii.edu")
+sheet_name <- "https://docs.google.com/spreadsheets/d/1AMlsLPDnwt01eEsBLdRe1hvhNSa3ofndcWX0gJ9xbUo/"
+new_sheet <- TRUE  # Set to TRUE if you want to create a new sheet, FALSE otherwise
+
+# Write data frame to Google Sheet
+if (new_sheet) {
+  # Create a new Google Sheet
+    gs4_create(sheet_name, sheets = list(data_frame_name = db.csa))
+} else {
+  # Specify an existing Google Sheet
+    sheet_id <- "your_sheet_id"  # Replace with the ID of your existing Google Sheet
+    gs4_get(sheet_id) %>% gs4_write(db.csa, sheet = "Sheet1")
+}
+
+
+```
 
 # analysis
 
