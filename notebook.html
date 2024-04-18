@@ -3150,6 +3150,60 @@ fields*</td>
 </table>
 </div>
 </div>
+<div id="database-construction" class="section level1">
+<h1>Database Construction</h1>
+<div id="merge-data-streams" class="section level2">
+<h2>Merge Data Streams</h2>
+<pre class="r"><code>db_merge &lt;- function(x, y){
+    cn.x &lt;- colnames(x)
+    cn.y &lt;- colnames(y)
+    cn.xy &lt;- cn.y[!(cn.y %in% cn.x)]
+    xy &lt;- data.frame(array(dim = c(nrow(x), length(cn.xy))))
+    xy &lt;- data.frame(x, xy)
+    colnames(xy) &lt;- c(colnames(x), cn.xy)
+    xy &lt;- xy[ ,order(colnames(xy))]
+    cn.yx &lt;- cn.x[!(cn.x %in% cn.y)]
+    yx &lt;- data.frame(array(dim = c(nrow(y), length(cn.yx))))
+    yx &lt;- data.frame(y, yx)
+    colnames(yx) &lt;- c(colnames(y), cn.yx)
+    yx &lt;- yx[ ,order(colnames(yx))]
+    out &lt;- rbind(xy, yx)
+    return(out)
+}
+
+
+db.og &lt;- as.data.frame(read_sheet(&quot;https://docs.google.com/spreadsheets/d/1AMlsLPDnwt01eEsBLdRe1hvhNSa3ofndcWX0gJ9xbUo/&quot;, sheet = &quot;Original&quot;))</code></pre>
+<pre><code>## ✔ Reading from &quot;Climate Smart Agriculture Resource Database&quot;.</code></pre>
+<pre><code>## ✔ Range &#39;&#39;Original&#39;&#39;.</code></pre>
+<pre class="r"><code>db.jh &lt;- as.data.frame(read_sheet(&quot;https://docs.google.com/spreadsheets/d/1AMlsLPDnwt01eEsBLdRe1hvhNSa3ofndcWX0gJ9xbUo/&quot;, sheet = &quot;Jackson&#39;s Version&quot;))</code></pre>
+<pre><code>## ✔ Reading from &quot;Climate Smart Agriculture Resource Database&quot;.</code></pre>
+<pre><code>## ✔ Range &#39;&#39;Jackson&#39;&#39;s Version&#39;&#39;.</code></pre>
+<pre class="r"><code>db.mg &lt;- db_merge(db.og, db.jh) %&gt;% 
+    distinct
+
+colnames(db.og)[colnames(db.og) == &quot;Resources (Links)&quot;] &lt;- &quot;Resource&quot;
+colnames(nrc.tab)[colnames(nrc.tab) == &quot;Sub-Category 1&quot;] &lt;- &quot;Sub-Category&quot;
+
+db.csa &lt;- db_merge(db.og, nrc.tab)
+
+
+gs4_auth(&quot;mklau3@hawaii.edu&quot;)
+sheet_name &lt;- &quot;https://docs.google.com/spreadsheets/d/1AMlsLPDnwt01eEsBLdRe1hvhNSa3ofndcWX0gJ9xbUo/&quot;
+new_sheet &lt;- TRUE  # Set to TRUE if you want to create a new sheet, FALSE otherwise
+
+# Write data frame to Google Sheet
+if (new_sheet) {
+  # Create a new Google Sheet
+    gs4_create(sheet_name, sheets = list(data_frame_name = db.csa))
+} else {
+  # Specify an existing Google Sheet
+    sheet_id &lt;- &quot;your_sheet_id&quot;  # Replace with the ID of your existing Google Sheet
+    gs4_get(sheet_id) %&gt;% gs4_write(db.csa, sheet = &quot;Sheet1&quot;)
+}</code></pre>
+<pre><code>## ✔ Creating new Sheet:
+##   &quot;https://docs.google.com/spreadsheets/d/1AMlsLPDnwt01eEsBLdRe1hvhNSa3ofndcWX0gJ9xbUo/&quot;.</code></pre>
+</div>
+</div>
 <div id="analysis" class="section level1">
 <h1>analysis</h1>
 <ul>

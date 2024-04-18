@@ -201,7 +201,7 @@ nrc.tab <- cbind(do.call(rbind, nrc.cat), nrc.url)
 colnames(nrc.tab) <- c("Category", 
                        paste0("Sub-Category ", seq(1, ncol(nrc.tab)-2)),
                        "Resource")
-
+save(nrc.tab, file = "./data/nrc_tab.Rdata")
 
 ```
 
