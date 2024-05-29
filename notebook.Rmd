@@ -10,7 +10,9 @@ https://gofarmhawaii.org/aghelp/
 
 https://attra.ncat.org/topics/
 
-https://ifssportal.nutritionconnect.org/solutions/explore
+https://www.ams.usda.gov/services/grants
+
+
 
 
 # Context
@@ -82,6 +84,7 @@ p_load(litsearchr, rcrossref, purrr, wordcloud,
        knitr, googlesheets4, dplyr)
 
 ```
+
 
 
 ## rcrossref
@@ -162,6 +165,29 @@ https://luketudge.github.io/litsearchr-tutorial/litsearchr_tutorial.html
 
 
 ```
+
+# analysis
+
+- policy 
+- farming practices
+- databases
+- tropics
+- ecosystem services
+
+[Bibliometrix](https://www.bibliometrix.org/home/index.php/layout/bibliometrix  "Bibliometrix")
+
+## R Tools
+
+- https://elizagrames.github.io/litsearchr/#tutorials 
+- https://www.bibliometrix.org/home/index.php/layout/bibliometrix 
+- https://www.harc-hspa.com/climate-smart-agriculture.html 
+- https://github.com/elizagrames/topictagger 
+- https://github.com/cran/metagear 
+- https://cran.r-project.org/web/packages/scholar/index.html 
+
+
+
+# CSA-ES Resource Database
 
 ## Webcrawling
 
@@ -259,10 +285,6 @@ kable(csa.mit.tab)
 
 
 
-# Database Construction
-
-
-
 ## Merge Data Streams
 
 ```{r merge-dbs}
@@ -314,23 +336,31 @@ if (new_sheet) {
 
 ```
 
-# analysis
-
-- policy 
-- farming practices
-- databases
-- tropics
-- ecosystem services
-
-[Bibliometrix](https://www.bibliometrix.org/home/index.php/layout/bibliometrix  "Bibliometrix")
 
 
-## R Tools
+# Web-hosted Database Interface
 
-- https://elizagrames.github.io/litsearchr/#tutorials 
-- https://www.bibliometrix.org/home/index.php/layout/bibliometrix 
-- https://www.harc-hspa.com/climate-smart-agriculture.html 
-- https://github.com/elizagrames/topictagger 
-- https://github.com/cran/metagear 
-- https://cran.r-project.org/web/packages/scholar/index.html 
+## Worflow
 
+- Generate database with known units
+- Create webapp using **shiny**
+- Deploy to <https://uhwo.shinyapps.io/hicsatool/> using **rsconnect**
+  and [shiny.io](shiny.posit.co/r/articles/share/shinyapps)
+- Test using [TavisCI](https://www.travis-ci.com/)
+- Issues go to <https://github.com/ecoFw/hi-csa-es/issues>
+
+```{r shiny-app, eval = FALSE, echo = TRUE}
+
+runApp()
+
+
+```
+
+
+<!-- Rendering rmarkdown Notebook -->
+```{r render-notbook, eval = FALSE, echo = FALSE, message=FALSE, warnings=FALSE}
+
+rmarkdown::render("notebook.Rmd", 
+                  output_format = c("html_document", "pdf_document", "odt_document"))
+
+```
