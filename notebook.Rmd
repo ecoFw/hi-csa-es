@@ -337,6 +337,39 @@ if (new_sheet) {
 ```
 
 
+```{r attra}
+
+attra <- readRDS("../hi-csa-db/data/attra.rds")
+
+grep("climate", attra[["INDEX"]][, "Url"])
+attra[["INDEX"]][grep("climate", attra[["INDEX"]][, "Url"]), "Url"]
+
+```
+
+```{r hi-csa-db}
+
+hicsa <- readRDS("../hi-csa-db/data/hi-csa-db.rds")
+
+```
+
+NIFA post funding opportunities. These can be matched to climate smart
+applications. Will need additional data pipeline construction. 
+
+```{r nifa, echo = TRUE, eval = FALSE}
+
+nifa <- readRDS("../hi-csa-db/data/nifa.rds")
+nifa[["INDEX"]][grep("funding", nifa[["INDEX"]][, "Url"]), "Url"]
+
+```
+
+
+```{r nrcs}
+
+nrcs <- readRDS("../hi-csa-db/data/nrcs.rds")
+nrcs[["INDEX"]][grep("funding", nrcs[["INDEX"]][, "Url"]), "Url"]
+
+```
+
 
 # Web-hosted Database Interface
 
