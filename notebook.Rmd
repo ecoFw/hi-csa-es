@@ -21,8 +21,7 @@ The City and County of Honolulu's Office of Climate Resilience has
 contracted OACA to produce a Climate Smart Agriculture database
 intended to inform food system professionals and policy makers on the
 potential ecosystem service impacts of CSA activities. The consultant
-(MK Lau) has been sub-contracted by OACA to complete the deliverables
-listed below in partial fulfillment of the larger contracted
+(MK Lau) has been sub-contracted by OACA to complete the deliverables listed below in partial fulfillment of the larger contracted
 deliverable to HC&C.
 
 
@@ -81,7 +80,7 @@ Other government data:
 library(pacman)
 p_load(litsearchr, rcrossref, purrr, wordcloud, 
        tm, RColorBrewer, ggplot2, Rcrawler, rvest, 
-       knitr, googlesheets4, dplyr)
+       knitr, googlesheets4, dplyr, shiny)
 
 ```
 
@@ -384,8 +383,8 @@ nrcs[["INDEX"]][grep("funding", nrcs[["INDEX"]][, "Url"]), "Url"]
 
 ```{r shiny-app, eval = FALSE, echo = TRUE}
 
-runApp()
-
+shiny::runApp()
+rsconnect::deployApp()
 
 ```
 
