@@ -21,8 +21,7 @@ The City and County of Honolulu's Office of Climate Resilience has
 contracted OACA to produce a Climate Smart Agriculture database
 intended to inform food system professionals and policy makers on the
 potential ecosystem service impacts of CSA activities. The consultant
-(MK Lau) has been sub-contracted by OACA to complete the deliverables
-listed below in partial fulfillment of the larger contracted
+(MK Lau) has been sub-contracted by OACA to complete the deliverables listed below in partial fulfillment of the larger contracted
 deliverable to HC&C.
 
 
@@ -81,7 +80,7 @@ Other government data:
 library(pacman)
 p_load(litsearchr, rcrossref, purrr, wordcloud, 
        tm, RColorBrewer, ggplot2, Rcrawler, rvest, 
-       knitr, googlesheets4, dplyr)
+       knitr, googlesheets4, dplyr, shiny)
 
 ```
 
@@ -337,6 +336,39 @@ if (new_sheet) {
 ```
 
 
+```{r attra}
+
+attra <- readRDS("../hi-csa-db/data/attra.rds")
+
+grep("climate", attra[["INDEX"]][, "Url"])
+attra[["INDEX"]][grep("climate", attra[["INDEX"]][, "Url"]), "Url"]
+
+```
+
+```{r hi-csa-db}
+
+hicsa <- readRDS("../hi-csa-db/data/hi-csa-db.rds")
+
+```
+
+NIFA post funding opportunities. These can be matched to climate smart
+applications. Will need additional data pipeline construction. 
+
+```{r nifa, echo = TRUE, eval = FALSE}
+
+nifa <- readRDS("../hi-csa-db/data/nifa.rds")
+nifa[["INDEX"]][grep("funding", nifa[["INDEX"]][, "Url"]), "Url"]
+
+```
+
+
+```{r nrcs}
+
+nrcs <- readRDS("../hi-csa-db/data/nrcs.rds")
+nrcs[["INDEX"]][grep("funding", nrcs[["INDEX"]][, "Url"]), "Url"]
+
+```
+
 
 # Web-hosted Database Interface
 
@@ -351,8 +383,8 @@ if (new_sheet) {
 
 ```{r shiny-app, eval = FALSE, echo = TRUE}
 
-runApp()
-
+shiny::runApp()
+rsconnect::deployApp()
 
 ```
 
