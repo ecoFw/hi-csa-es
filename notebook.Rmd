@@ -78,9 +78,9 @@ Other government data:
 ```{r setup, echo = FALSE}
 
 library(pacman)
-p_load(litsearchr, rcrossref, purrr, wordcloud, 
+p_load(rcrossref, purrr, wordcloud, 
        tm, RColorBrewer, ggplot2, Rcrawler, rvest, 
-       knitr, googlesheets4, dplyr, shiny)
+       knitr, googlesheets4, dplyr, shiny, rsconnect)
 
 ```
 
@@ -499,10 +499,6 @@ shiny::runApp()
 rsconnect::deployApp()
 
 ```
-
-
-
-
 
 <!-- Rendering rmarkdown Notebook -->
 ```{r render-notbook, eval = FALSE, echo = FALSE, message=FALSE, warnings=FALSE}
