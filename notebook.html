@@ -466,6 +466,31 @@ precision</li>
 </ol>
 <p><a href="https://luketudge.github.io/litsearchr-tutorial/litsearchr_tutorial.html" class="uri">https://luketudge.github.io/litsearchr-tutorial/litsearchr_tutorial.html</a></p>
 </div>
+</div>
+<div id="analysis" class="section level1">
+<h1>analysis</h1>
+<ul>
+<li>policy</li>
+<li>farming practices</li>
+<li>databases</li>
+<li>tropics</li>
+<li>ecosystem services</li>
+</ul>
+<p><a href="https://www.bibliometrix.org/home/index.php/layout/bibliometrix" title="Bibliometrix">Bibliometrix</a></p>
+<div id="r-tools" class="section level2">
+<h2>R Tools</h2>
+<ul>
+<li><a href="https://elizagrames.github.io/litsearchr/#tutorials" class="uri">https://elizagrames.github.io/litsearchr/#tutorials</a></li>
+<li><a href="https://www.bibliometrix.org/home/index.php/layout/bibliometrix" class="uri">https://www.bibliometrix.org/home/index.php/layout/bibliometrix</a></li>
+<li><a href="https://www.harc-hspa.com/climate-smart-agriculture.html" class="uri">https://www.harc-hspa.com/climate-smart-agriculture.html</a></li>
+<li><a href="https://github.com/elizagrames/topictagger" class="uri">https://github.com/elizagrames/topictagger</a></li>
+<li><a href="https://github.com/cran/metagear" class="uri">https://github.com/cran/metagear</a></li>
+<li><a href="https://cran.r-project.org/web/packages/scholar/index.html" class="uri">https://cran.r-project.org/web/packages/scholar/index.html</a></li>
+</ul>
+</div>
+</div>
+<div id="csa-es-resource-database" class="section level1">
+<h1>CSA-ES Resource Database</h1>
 <div id="webcrawling" class="section level2">
 <h2>Webcrawling</h2>
 <p><a href="https://github.com/salimk/Rcrawler" class="uri">https://github.com/salimk/Rcrawler</a> <a href="https://ladal.edu.au/webcrawling.html#Following_links" class="uri">https://ladal.edu.au/webcrawling.html#Following_links</a></p>
@@ -498,7 +523,8 @@ for (i in seq_len(length(nrc.cat))){
 nrc.tab &lt;- cbind(do.call(rbind, nrc.cat), nrc.url)
 colnames(nrc.tab) &lt;- c(&quot;Category&quot;, 
                        paste0(&quot;Sub-Category &quot;, seq(1, ncol(nrc.tab)-2)),
-                       &quot;Resource&quot;)</code></pre>
+                       &quot;Resource&quot;)
+save(nrc.tab, file = &quot;./data/nrc_tab.Rdata&quot;)</code></pre>
 <p>Data from <a href="https://www.nrcs.usda.gov/sites/default/files/2023-10/NRCS-CSAF-Mitigation-Activities-List.pdf">NRCS</a>
 were extracted manually using <a href="https://tabula.technology/" title="tabula">tabula</a>.</p>
 <pre class="r"><code>csa.mit.tab &lt;- read.csv(&quot;data/tabula-NRCS-CSAF-Mitigation-Activities.csv&quot;, header = FALSE)
@@ -3149,9 +3175,6 @@ fields*</td>
 </tbody>
 </table>
 </div>
-</div>
-<div id="database-construction" class="section level1">
-<h1>Database Construction</h1>
 <div id="merge-data-streams" class="section level2">
 <h2>Merge Data Streams</h2>
 <pre class="r"><code>db_merge &lt;- function(x, y){
@@ -3173,6 +3196,16 @@ fields*</td>
 
 
 db.og &lt;- as.data.frame(read_sheet(&quot;https://docs.google.com/spreadsheets/d/1AMlsLPDnwt01eEsBLdRe1hvhNSa3ofndcWX0gJ9xbUo/&quot;, sheet = &quot;Original&quot;))</code></pre>
+<pre><code>## ℹ Suitable tokens found in the cache, associated with these emails:</code></pre>
+<pre><code>## • &#39;matt@maoorganicfarms.org&#39;</code></pre>
+<pre><code>## • &#39;mklau3@hawaii.edu&#39;</code></pre>
+<pre><code>##   Defaulting to the first email.</code></pre>
+<pre><code>## ! Using an auto-discovered, cached token.</code></pre>
+<pre><code>##   To suppress this message, modify your code or options to clearly consent to the use of a cached token.</code></pre>
+<pre><code>##   See gargle&#39;s &quot;Non-interactive auth&quot; vignette for more details:</code></pre>
+<pre><code>##   &lt;https://gargle.r-lib.org/articles/non-interactive-auth.html&gt;</code></pre>
+<pre><code>## ℹ The googlesheets4 package is using a cached token for &#39;matt@maoorganicfarms.org&#39;.</code></pre>
+<pre><code>## Auto-refreshing stale OAuth token.</code></pre>
 <pre><code>## ✔ Reading from &quot;Climate Smart Agriculture Resource Database&quot;.</code></pre>
 <pre><code>## ✔ Range &#39;&#39;Original&#39;&#39;.</code></pre>
 <pre class="r"><code>db.jh &lt;- as.data.frame(read_sheet(&quot;https://docs.google.com/spreadsheets/d/1AMlsLPDnwt01eEsBLdRe1hvhNSa3ofndcWX0gJ9xbUo/&quot;, sheet = &quot;Jackson&#39;s Version&quot;))</code></pre>
@@ -3200,30 +3233,24 @@ if (new_sheet) {
     sheet_id &lt;- &quot;your_sheet_id&quot;  # Replace with the ID of your existing Google Sheet
     gs4_get(sheet_id) %&gt;% gs4_write(db.csa, sheet = &quot;Sheet1&quot;)
 }</code></pre>
-<pre><code>## ✔ Creating new Sheet:
-##   &quot;https://docs.google.com/spreadsheets/d/1AMlsLPDnwt01eEsBLdRe1hvhNSa3ofndcWX0gJ9xbUo/&quot;.</code></pre>
+<pre><code>## ✔ Creating new Sheet: &quot;https://docs.google.com/spreadsheets/d/1AMlsLPDnwt01eEsBLdRe1hvhNSa3ofndcWX0gJ9xbUo/&quot;.</code></pre>
+<pre><code>## Auto-refreshing stale OAuth token.</code></pre>
 </div>
 </div>
-<div id="analysis" class="section level1">
-<h1>analysis</h1>
+<div id="web-hosted-database-interface" class="section level1">
+<h1>Web-hosted Database Interface</h1>
+<div id="worflow" class="section level2">
+<h2>Worflow</h2>
 <ul>
-<li>policy</li>
-<li>farming practices</li>
-<li>databases</li>
-<li>tropics</li>
-<li>ecosystem services</li>
+<li>Generate database with known units</li>
+<li>Create webapp using <strong>shiny</strong></li>
+<li>Deploy to <a href="https://uhwo.shinyapps.io/hicsatool/" class="uri">https://uhwo.shinyapps.io/hicsatool/</a> using
+<strong>rsconnect</strong> and <a href="shiny.posit.co/r/articles/share/shinyapps">shiny.io</a></li>
+<li>Test using <a href="https://www.travis-ci.com/">TavisCI</a></li>
+<li>Issues go to <a href="https://github.com/ecoFw/hi-csa-es/issues" class="uri">https://github.com/ecoFw/hi-csa-es/issues</a></li>
 </ul>
-<p><a href="https://www.bibliometrix.org/home/index.php/layout/bibliometrix" title="Bibliometrix">Bibliometrix</a></p>
-<div id="r-tools" class="section level2">
-<h2>R Tools</h2>
-<ul>
-<li><a href="https://elizagrames.github.io/litsearchr/#tutorials" class="uri">https://elizagrames.github.io/litsearchr/#tutorials</a></li>
-<li><a href="https://www.bibliometrix.org/home/index.php/layout/bibliometrix" class="uri">https://www.bibliometrix.org/home/index.php/layout/bibliometrix</a></li>
-<li><a href="https://www.harc-hspa.com/climate-smart-agriculture.html" class="uri">https://www.harc-hspa.com/climate-smart-agriculture.html</a></li>
-<li><a href="https://github.com/elizagrames/topictagger" class="uri">https://github.com/elizagrames/topictagger</a></li>
-<li><a href="https://github.com/cran/metagear" class="uri">https://github.com/cran/metagear</a></li>
-<li><a href="https://cran.r-project.org/web/packages/scholar/index.html" class="uri">https://cran.r-project.org/web/packages/scholar/index.html</a></li>
-</ul>
+<pre class="r"><code>runApp()</code></pre>
+<!-- Rendering Rmarkdown Notebook -->
 </div>
 </div>
 
