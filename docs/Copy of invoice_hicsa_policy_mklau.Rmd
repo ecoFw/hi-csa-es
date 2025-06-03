@@ -1,0 +1,99 @@
+---
+title: "Consulting Invoice: Hawai‘i CSA Database Project"
+output: pdf_document
+date:  "`r format(Sys.time(), '%d %B, %Y')`"
+
+---
+
+**Bill To:**
+
+*O‘ahu Agriculture and Conservation Association*
+
+P.O. Box 4
+92-1770 Kunia Road
+Kunia, HI 96759
+
+
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = FALSE, xtable.comment = FALSE)
+library(pacman)
+p_load(tidyverse, lubridate, googlesheets4, xtable, rmarkdown,
+       knitr, kableExtra, pander, rmarkdown)
+dlm <- function() {
+    as.Date(format(Sys.time(), "%Y-%m-01"))-1
+}
+
+info <- c(start = as.Date("2024-01-04"),
+          end = as.Date(format(Sys.time(), "%Y-%m-01"))-1,
+          date = as.Date(format(Sys.time(), "%Y-%m-01")))
+
+invoice_data <- read_sheet("https://docs.google.com/spreadsheets/d/1-NAHSV5AETSxhVEOV09fVyZEMCFVxZm7K7YbbWDTwGA//", sheet = 1)
+
+invoice_data <- data.frame(invoice_data)
+invoice_data[is.na(invoice_data[, "Hours"]), "Hours"] <- 0
+inv.mon <- format(invoice_data[, "Date"], "%Y-%m")
+inv.act <- split(invoice_data[, "Activities"], f = inv.mon) %>% 
+    lapply(function(x) x[!(is.na(x))]) %>% 
+    lapply(paste, collapse = ", ") %>% 
+    lapply(strsplit, split = ", ") %>% 
+    lapply(function(x) names(table(x))) %>% 
+    lapply(paste, collapse = ", ") %>% 
+    lapply(function(x) str_replace(x, "^\\w{1}", toupper)) %>%
+    lapply(function(x) paste0(x, "."))
+inv.hrs <- tapply(invoice_data[, "Hours"], inv.mon, sum)
+inv.amt <- inv.hrs * invoice_data[1, "Rate"]
+
+```
+
+```{r calc, echo = FALSE}
+
+
+bill <- data.frame("Year.Month" = names(inv.act), 
+                   Activities = unlist(inv.act), 
+                   Hours = inv.hrs,
+                   Amount = paste0("$", inv.amt))
+bill <- rbind(bill, 
+              c("", "", "Total", paste0("$", sum(inv.amt))))
+bill <- bill[bill[, "Hours"] != 0, ]
+
+```
+
+
+**Invoice Number**: `r paste0(info["start"], "--", info["end"])` 
+
+Date: `r info["date"]` 
+
+Total Hours: `r sum(inv.hrs)` 
+
+Rate ($/hr): `r invoice_data[1, "Rate"]` 
+
+*Total Amount*: `r paste0("$", sum(inv.hrs)*invoice_data[1, "Rate"])` 
+
+
+
+```{r bill, results='asis', message=FALSE, warning=FALSE}
+
+rownames(bill) <- NULL
+pander(bill)
+
+```
+
+**Please make checks payable to:**
+
+Matthew Kekoa Lau
+
+92-1365 Hauone St
+
+Kaploei, HI, 96707
+
+**Contact Info**
+
+Email: mk@mklau.info
+
+Phone: (928)600-0546
+
+---
+*Mahalo!*
+
